@@ -7,7 +7,7 @@ s4ng custom
 
 ## Usage
 
-Widonws | [Mac or Linux](https://github.com/s4ng/lazy-vim-custom)
+Windows | [Mac or Linux](https://github.com/s4ng/lazy-vim-custom)
 
 - 현재의 Nvim 설정을 백업하세요.
 
