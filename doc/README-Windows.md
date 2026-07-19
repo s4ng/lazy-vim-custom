@@ -33,7 +33,7 @@ s4ng custom
 | 기능 | 필요한 것 |
 |---|---|
 | **Java / Spring 개발** | JDK 21 이상 (jdtls 구동용) |
-| **한/영 입력기 표시 ([ime-status](https://github.com/s4ng/ime-status.nvim))** | `im-select.exe` — PATH에 등록 후 `:checkhealth ime-status`로 확인 |
+| **한/영 입력기 표시 ([ime-status](https://github.com/s4ng/ime-status.nvim))** | 불필요 — 내장 FFI 백엔드로 동작. `:checkhealth ime-status`로 확인 |
 
 ### 설치 예시 (scoop)
 
@@ -48,7 +48,7 @@ scoop install openjdk        # Java/Spring 개발 (JDK 21+)
 ```
 
 - **Nerd Font**: [nerdfonts.com](https://www.nerdfonts.com/)에서 폰트를 설치한 뒤 사용하는 터미널(Windows Terminal 등)의 폰트로 지정하세요.
-- **im-select.exe** (ime-status): [daipeihust/im-select](https://github.com/daipeihust/im-select) 릴리스에서 받아 PATH에 등록하세요.
+- **zig** (Treesitter): MSVC가 없는 머신에서는 저장소에 내장된 래퍼(`scripts/zig-cc.cmd`)가 자동으로 사용되므로 zig만 설치하면 됩니다. MSVC(cl.exe)가 이미 있다면 zig 없이도 동작합니다.
 - winget을 선호하면 `winget install Neovim.Neovim BurntSushi.ripgrep.MSVC sharkdp.fd JesseDuffield.lazygit OpenJS.NodeJS` 등으로 대체할 수 있습니다.
 
 ## Usage

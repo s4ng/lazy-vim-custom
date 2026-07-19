@@ -33,7 +33,7 @@ s4ng custom
 | 기능 | 필요한 것 |
 |---|---|
 | **Java / Spring 개발** | JDK 21 이상 (jdtls 구동용) |
-| **한/영 입력기 표시 ([ime-status](https://github.com/s4ng/ime-status.nvim))** | macOS: `macism` · Linux: `ibus` 또는 `fcitx5-remote`(실험적) — `:checkhealth ime-status`로 확인 |
+| **한/영 입력기 표시 ([ime-status](https://github.com/s4ng/ime-status.nvim))** | macOS: `macism` · Linux: `ibus` 또는 `fcitx5-remote`(실험적) · Windows: 불필요(내장 FFI) — `:checkhealth ime-status`로 확인 |
 | **클립보드 연동 (Linux)** | X11: `xclip`/`xsel`, Wayland: `wl-clipboard` |
 
 ### 설치 예시
