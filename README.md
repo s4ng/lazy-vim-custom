@@ -53,12 +53,56 @@ brew install openjdk                        # Java/Spring 개발 (JDK 21+)
 **Linux (Debian/Ubuntu 예시)**
 
 ```bash
-sudo apt install neovim git ripgrep fd-find nodejs npm build-essential xclip
+sudo apt install git ripgrep fd-find nodejs npm build-essential xclip
 # lazygit: 배포판 저장소 또는 https://github.com/jesseduffield/lazygit#installation 참고
 # ime-status: ibus 또는 fcitx5 설치 후 :checkhealth ime-status
 ```
 
+> Neovim은 0.11 이상을 별도로 설치하세요. Debian/Ubuntu 기본 저장소의 `neovim`
+> 패키지는 배포판 버전에 따라 너무 오래된 버전일 수 있습니다.
+> `nvim --version`으로 실제 버전을 먼저 확인하세요.
+
 > 참고: Debian 계열은 `fd`가 `fdfind` 이름으로 설치됩니다. `ln -s $(which fdfind) ~/.local/bin/fd` 로 별칭을 만들어 두면 편합니다.
+
+### Linux 런타임 경로 오류
+
+아래처럼 `module 'vim.uri' not found` 또는 `syntax/syntax.vim` 오류가 나면
+설정보다 Neovim 본체의 런타임 경로가 깨진 상태일 가능성이 큽니다.
+Neovim 0.12.x에서도 같은 오류가 난다면 버전 부족이 아니라 런타임 파일을
+찾는 경로 문제로 보는 편이 맞습니다.
+
+```text
+module 'vim.uri' not found
+E484: Can't open file .../syntax/syntax.vim
+```
+
+`vim.uri`와 `syntax/syntax.vim`은 플러그인이 아니라 Neovim 기본 런타임 파일입니다.
+먼저 다음 명령으로 런타임 파일이 실제로 보이는지 확인하세요.
+
+```bash
+nvim --clean --headless \
+  '+lua print(vim.env.VIMRUNTIME); print(vim.fn.filereadable(vim.env.VIMRUNTIME .. "/lua/vim/uri.lua")); print(vim.fn.filereadable(vim.env.VIMRUNTIME .. "/syntax/syntax.vim"))' \
+  +qa
+```
+
+정상이라면 마지막 두 줄이 모두 `1`이어야 합니다. `0`이 나오거나
+`$VIMRUNTIME`가 `~/.local/share/nvim`처럼 플러그인 데이터 디렉터리를 가리키면
+셸 설정에서 `VIMRUNTIME` export를 제거한 뒤 터미널을 다시 여세요.
+
+소스 빌드한 Neovim을 직접 실행 중이라면 런타임도 함께 설치해야 합니다.
+
+```bash
+cd ~/src/neovim
+make CMAKE_BUILD_TYPE=Release
+sudo make install
+```
+
+설치하지 않고 빌드 트리에서 바로 실행해야 한다면, 해당 셸에서만 런타임을
+소스 트리의 `runtime` 디렉터리로 지정하세요.
+
+```bash
+export VIMRUNTIME="$HOME/src/neovim/runtime"
+```
 
 ## Usage
 
