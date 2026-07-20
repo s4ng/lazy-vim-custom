@@ -50,6 +50,21 @@ return {
         table.insert(opts.cmd, jvm_arg)
       end
 
+      -- ③ 코드 포매터를 IntelliJ 스타일에 맞춤.
+      --    jdtls(Eclipse JDT 포매터)는 IntelliJ .editorconfig 의 ij_* 속성을 못 읽으므로
+      --    대응 값을 담은 Eclipse formatter 프로파일 XML 을 직접 물려준다.
+      --    (메서드 체인 continuation 들여쓰기 8칸 등 — formatter/eclipse-java-formatter.xml)
+      --    settings.java 아래에 병합해 기존 inlayHints 설정을 보존한다.
+      local fmt_xml = vim.fn.stdpath("config") .. "/formatter/eclipse-java-formatter.xml"
+      opts.settings = opts.settings or {}
+      opts.settings.java = opts.settings.java or {}
+      opts.settings.java.format = vim.tbl_deep_extend("force", opts.settings.java.format or {}, {
+        settings = {
+          url = fmt_xml,
+          profile = "intellij-java",
+        },
+      })
+
       -- ② Spring Boot 확장 번들을 jdtls init_options.bundles 에 추가.
       --    opts.jdtls 를 "함수"로 주면 extend_or_override 가 base config 를 넘겨주므로
       --    기존 번들(java-debug/java-test)을 보존한 채 append 할 수 있다.

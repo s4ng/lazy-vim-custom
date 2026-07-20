@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  jdtls(Eclipse JDT 포매터)용 코드 스타일 프로파일.
+  web-manager-backend2 의 IntelliJ .editorconfig(ij_* 속성)를 Eclipse 포매터
+  설정으로 옮긴 것. jdtls 는 ij_* 속성을 못 읽으므로 여기서 대응 값을 지정한다.
+
+  - lua/plugins/java.lua 에서 java.format.settings.url/profile 로 연결된다.
+  - 여기에 지정하지 않은 항목은 Eclipse 기본값을 그대로 사용한다.
+  - 값을 더 맞추고 싶으면 org.eclipse.jdt.core.formatter.* setting 을 추가하면 된다.
+
+  주의: jdtls 포매터는 IntelliJ 와 엔진이 달라 100% 동일하지는 않다.
+        여기서는 실제 검증된 항목(들여쓰기 폭/메서드 체인 continuation 등)만 맞춘다.
+-->
+<profiles version="23">
+  <profile kind="CodeFormatterProfile" name="intellij-java" version="23">
+    <!-- 공백 4칸 들여쓰기 (ij: indent_size=4, indent_style=space, tab_width=4) -->
+    <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space"/>
+    <setting id="org.eclipse.jdt.core.formatter.tabulation.size" value="4"/>
+    <setting id="org.eclipse.jdt.core.formatter.indentation.size" value="4"/>
+
+    <!-- continuation 들여쓰기 8칸 = 2단위 × 4 (ij_continuation_indent_size=8) -->
+    <setting id="org.eclipse.jdt.core.formatter.continuation_indentation" value="2"/>
+    <setting id="org.eclipse.jdt.core.formatter.continuation_indentation_for_array_initializer" value="2"/>
+
+    <!-- 최대 줄 길이 120 (ij: max_line_length=120) -->
+    <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120"/>
+
+    <!-- 수동 줄바꿈 유지: IntelliJ 의 *_wrap=off 정책(강제 재줄바꿈 안 함)에 대응 -->
+    <setting id="org.eclipse.jdt.core.formatter.join_wrapped_lines" value="false"/>
+
+    <!-- 메서드 체인(.a().b()): 컬럼 정렬이 아니라 continuation(8칸) 들여쓰기.
+         ij_java_method_call_chain_wrap=off + ij_java_align_multiline_chained_methods=false 에 대응.
+         value=16 = 필요할 때만 wrap + continuation 들여쓰기 (짧은 체인/한 줄 체인은 그대로 둠). -->
+    <setting id="org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation" value="16"/>
+  </profile>
+</profiles>
