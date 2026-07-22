@@ -14,9 +14,10 @@ s4ng custom
 
 | 도구 | 용도 |
 |---|---|
-| **Neovim ≥ 0.11** | 본체 |
+| **Neovim ≥ 0.11.2** | LazyVim 최신 버전의 최소 요구사항 |
 | **git** | 플러그인 clone (lazy.nvim) |
 | **C 컴파일러** (clang/gcc) | Treesitter 파서 컴파일 (macOS는 `xcode-select --install`로 제공) |
+| **[tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/master/cli/README.md)** | Treesitter 파서 설치/업데이트 |
 | **[ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`)** | 텍스트 검색 (fzf-lua) |
 | **[Nerd Font](https://www.nerdfonts.com/)** | 아이콘 표시 (터미널 폰트로 지정) |
 
@@ -42,7 +43,7 @@ s4ng custom
 
 ```bash
 # 필수 + 권장
-brew install neovim git ripgrep fd lazygit node
+brew install neovim git ripgrep fd lazygit node tree-sitter-cli
 brew install --cask font-hack-nerd-font   # Nerd Font (설치 후 터미널 폰트로 지정)
 
 # 기능별 (선택)
@@ -53,7 +54,7 @@ brew install openjdk                        # Java/Spring 개발 (JDK 21+)
 **Linux (Debian/Ubuntu 예시)**
 
 ```bash
-sudo apt install git ripgrep fd-find nodejs npm build-essential xclip
+sudo apt install git ripgrep fd-find nodejs npm build-essential tree-sitter-cli xclip
 # lazygit: 배포판 저장소 또는 https://github.com/jesseduffield/lazygit#installation 참고
 # ime-status: ibus 또는 fcitx5 설치 후 :checkhealth ime-status
 ```
@@ -126,14 +127,29 @@ mv ~/.cache/nvim{,.bak}
 git clone https://github.com/s4ng/lazy-vim-custom ~/.config/nvim
 ```
 
-- .git 디렉토리를 제거하세요.
-
-```bash
-rm -rf ~/.config/nvim/.git
-```
-
-- Neovim을 시작히세요.
+- Neovim을 시작하세요.
 
 ```bash
 nvim
 ```
+
+## Update and verification
+
+설정 저장소를 유지한 채 최신화하려면 다음 순서로 실행하세요. `lazy-lock.json`도
+변경될 수 있으므로, 검증 후 함께 커밋하는 것을 권장합니다.
+
+```bash
+cd ~/.config/nvim
+git pull --ff-only
+nvim
+```
+
+Neovim 안에서 `:Lazy update`를 실행한 뒤 재시작하고, 다음을 실행하세요.
+
+```vim
+:checkhealth
+:TSUpdate
+```
+
+Tree-sitter CLI가 없으면 파서 설치가 실패합니다. Java/Spring 환경을 사용하는 경우에는
+업데이트 후 Java 파일을 열어 jdtls attach와 포매팅도 한 번 확인하세요.

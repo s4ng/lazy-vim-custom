@@ -20,6 +20,7 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- LazyVim extras (개인 plugins 보다 먼저 로드되어야 함)
     { import = "lazyvim.plugins.extras.lang.java" },
+    { import = "lazyvim.plugins.extras.editor.snacks_picker" },
     -- import/override with your plugins
     { import = "plugins" },
   },

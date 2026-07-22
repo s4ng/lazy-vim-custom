@@ -14,9 +14,10 @@ s4ng custom
 
 | 도구 | 용도 |
 |---|---|
-| **Neovim ≥ 0.11** | 본체 |
+| **Neovim ≥ 0.11.2** | LazyVim 최신 버전의 최소 요구사항 |
 | **git** | 플러그인 clone (lazy.nvim) |
 | **C 컴파일러** (zig / LLVM / MSVC) | Treesitter 파서 컴파일 (Windows에선 `zig` 권장) |
+| **[tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/master/cli/README.md)** | Treesitter 파서 설치/업데이트 |
 | **[ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`)** | 텍스트 검색 (fzf-lua) |
 | **[Nerd Font](https://www.nerdfonts.com/)** | 아이콘 표시 (터미널 폰트로 지정) |
 
@@ -41,6 +42,7 @@ s4ng custom
 # 필수 + 권장
 scoop install neovim git ripgrep fd lazygit nodejs
 scoop install zig            # Treesitter 파서 컴파일용 C 컴파일러
+scoop install tree-sitter    # Treesitter 파서 설치/업데이트용 CLI
 
 # 기능별 (선택)
 scoop bucket add java
@@ -72,15 +74,21 @@ git clone https://github.com/s4ng/lazy-vim-custom $env:LOCALAPPDATA\nvim
 
 ```
 
-- .git 디렉토리를 제거하세요.
-
-```
-Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
-
-```
-
 - Neovim을 시작하세요.
 
 ```
 nvim
 ```
+
+## Update and verification
+
+설정 저장소를 유지한 채 최신화하려면 PowerShell에서 다음을 실행하세요.
+
+```powershell
+Set-Location $env:LOCALAPPDATA\nvim
+git pull --ff-only
+nvim
+```
+
+Neovim 안에서 `:Lazy update`를 실행한 뒤 재시작하고, `:checkhealth` 및 `:TSUpdate`를
+실행하세요. Tree-sitter CLI가 없으면 파서 설치가 실패합니다.
