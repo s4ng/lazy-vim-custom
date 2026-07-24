@@ -33,7 +33,6 @@ s4ng custom
 
 | 기능 | 필요한 것 |
 |---|---|
-| **Java / Spring 개발** | JDK 21 이상 (jdtls 구동용) |
 | **한/영 입력기 표시 ([ime-status](https://github.com/s4ng/ime-status.nvim))** | 불필요 — 내장 FFI 백엔드로 동작. `:checkhealth ime-status`로 확인 |
 
 ### 설치 예시 (scoop)
@@ -43,10 +42,6 @@ s4ng custom
 scoop install neovim git ripgrep fd lazygit nodejs
 scoop install zig            # Treesitter 파서 컴파일용 C 컴파일러
 scoop install tree-sitter    # Treesitter 파서 설치/업데이트용 CLI
-
-# 기능별 (선택)
-scoop bucket add java
-scoop install openjdk        # Java/Spring 개발 (JDK 21+)
 ```
 
 - **Nerd Font**: [nerdfonts.com](https://www.nerdfonts.com/)에서 폰트를 설치한 뒤 사용하는 터미널(Windows Terminal 등)의 폰트로 지정하세요.
