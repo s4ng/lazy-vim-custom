@@ -33,7 +33,7 @@ s4ng custom
 
 | 기능 | 필요한 것 |
 |---|---|
-| **한/영 입력기 표시 ([ime-status](https://github.com/s4ng/ime-status.nvim))** | macOS: `macism` · Linux: `ibus` 또는 `fcitx5-remote`(실험적) · Windows: 불필요(내장 FFI) — `:checkhealth ime-status`로 확인 |
+| **한/영 입력기 표시 ([ime-status](https://github.com/s4ng/ime-status.nvim))** | macOS · Windows: 불필요(내장 FFI) · Linux: `ibus` 또는 `fcitx5-remote`(실험적) — `:checkhealth ime-status`로 확인 |
 | **클립보드 연동 (Linux)** | X11: `xclip`/`xsel`, Wayland: `wl-clipboard` |
 
 ### 설치 예시
@@ -44,9 +44,6 @@ s4ng custom
 # 필수 + 권장
 brew install neovim git ripgrep fd lazygit node tree-sitter-cli
 brew install --cask font-hack-nerd-font   # Nerd Font (설치 후 터미널 폰트로 지정)
-
-# 기능별 (선택)
-brew install laishulu/homebrew/macism      # ime-status: 한/영 표시 (⚠️ tap 경로 필수, `brew install macism`은 실패)
 ```
 
 **Linux (Debian/Ubuntu 예시)**
