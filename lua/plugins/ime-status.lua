@@ -12,5 +12,16 @@ return {
     })
     -- lualine_x 맨 앞에 현재 입력기 표시를 추가
     table.insert(opts.sections.lualine_x, 1, { require("ime-status").component })
+
+    -- lualine 은 자체 타이머(refresh.statusline, 1000ms)와 "User" 가 들어 있지 않은
+    -- 고정 이벤트 목록으로만 다시 그린다. 그래서 라벨이 바뀔 때 ime-status 가 보내는
+    -- redrawstatus 가 닿지 않고, 커서를 움직이지 않은 채 한/영만 누르면 최대 1초까지
+    -- 직전 라벨이 그대로 남는다. 변경 이벤트에서 직접 갱신시킨다.
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "IMEStatusChanged",
+      callback = function()
+        require("lualine").refresh({ place = { "statusline" } })
+      end,
+    })
   end,
 }
