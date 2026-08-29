@@ -1,11 +1,11 @@
-# 💤 LazyVim — Windows
+# 💤 LazyVim — macOS
 
 A starter template for [LazyVim](https://github.com/LazyVim/LazyVim).
 Refer to the [documentation](https://lazyvim.github.io/installation) to get started.
 
 s4ng custom
 
-> **Windows** · [macOS](README-macOS.md) · [Linux](README-Linux.md)
+> [Windows](README.md) · **macOS** · [Linux](README-Linux.md)
 
 ## Pre-requirements
 
@@ -18,10 +18,10 @@ s4ng custom
 |---|---|
 | **Neovim ≥ 0.12.0** | nvim-treesitter `main` 브랜치의 최소 요구사항 (아래 참고) |
 | **git** | 플러그인 clone (lazy.nvim) |
-| **C 컴파일러** (zig / LLVM / MSVC) | Treesitter 파서 컴파일 (Windows에선 `zig` 권장) |
+| **C 컴파일러** (clang) | Treesitter 파서 컴파일 — `xcode-select --install`로 제공 |
 | **[tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/master/cli/README.md) ≥ 0.26.1** | Treesitter 파서 설치/업데이트 |
 | **[ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`)** | 텍스트 검색 (snacks picker) |
-| **curl · tar** | Treesitter 파서 소스 다운로드/해제 (Windows 10 1803+ 기본 포함) |
+| **curl · tar** | Treesitter 파서 소스 다운로드/해제 (macOS 기본 포함) |
 | **[Nerd Font](https://www.nerdfonts.com/)** | 아이콘 표시 (터미널 폰트로 지정) |
 
 > **왜 0.12 이상인가**
@@ -42,79 +42,75 @@ s4ng custom
 | **Node.js (npm)** | tree-sitter CLI 설치 · 일부 LSP · mason 도구(markdownlint 등) · markdown-preview |
 
 > 한/영 입력기 표시([ime-status](https://github.com/s4ng/ime-status.nvim))는
-> **추가로 설치할 것이 없습니다.** user32/imm32를 LuaJIT FFI로 직접 읽으므로
-> 외부 프로그램(`im-select` 등)을 `PATH`에서 찾지 않습니다.
+> **추가로 설치할 것이 없습니다.** Carbon TIS API를 LuaJIT FFI로 직접 읽으므로
+> 외부 프로그램(`macism`, `im-select` 등)을 `PATH`에서 찾지 않습니다.
 > `:checkhealth ime-status`로 확인하세요.
 
-### 설치 예시 (scoop)
+### 설치 예시 (Homebrew)
 
-```powershell
+```bash
+# C 컴파일러 (이미 설치되어 있으면 건너뜁니다)
+xcode-select --install
+
 # 필수 + 권장
-scoop install neovim git ripgrep fd fzf lazygit nodejs
-scoop install zig            # Treesitter 파서 컴파일용 C 컴파일러
-scoop install tree-sitter    # Treesitter 파서 설치/업데이트용 CLI
+brew install neovim git ripgrep fd fzf lazygit node tree-sitter-cli
+brew install --cask font-hack-nerd-font   # Nerd Font (설치 후 터미널 폰트로 지정)
 ```
 
-설치 후 버전을 먼저 확인하세요. 패키지 매니저가 오래된 버전을 주면
+설치 후 버전을 먼저 확인하세요. 오래된 버전이 잡히면
 `:checkhealth nvim-treesitter`가 에러를 냅니다.
 
-```powershell
-nvim --version | Select-Object -First 1   # v0.12.0 이상
-tree-sitter --version                     # 0.26.1 이상
+```bash
+nvim --version | head -1    # v0.12.0 이상
+tree-sitter --version       # 0.26.1 이상
 ```
-
-`tree-sitter`가 0.26.1보다 낮으면 npm으로 최신 버전을 받으세요.
-
-```powershell
-npm install -g tree-sitter-cli
-```
-
-- **Nerd Font**: [nerdfonts.com](https://www.nerdfonts.com/)에서 폰트를 설치한 뒤 사용하는 터미널(Windows Terminal 등)의 폰트로 지정하세요.
-- **zig** (Treesitter): MSVC가 없는 머신에서는 저장소에 내장된 래퍼(`scripts/zig-cc.cmd`)가 자동으로 사용되므로 zig만 설치하면 됩니다. MSVC(cl.exe)가 이미 있다면 zig 없이도 동작합니다. 자세한 내용은 아래 참고.
-- scoop 대신 winget(`winget install Neovim.Neovim BurntSushi.ripgrep.MSVC sharkdp.fd JesseDuffield.lazygit OpenJS.NodeJS`)이나 chocolatey(`choco install neovim ripgrep fd fzf lazygit nodejs zig`)를 써도 됩니다.
 
 ### C 컴파일러를 zig로 쓰는 경우
 
+macOS는 `xcode-select --install`로 clang이 들어오므로 보통 zig는 필요 없습니다.
+Command Line Tools 없이 zig만 쓰고 싶다면 `brew install zig`로 설치하세요.
+
 `CC="zig cc"`를 그냥 내보내면 **동작하지 않습니다.** tree-sitter CLI가 `CC` 값
 전체를 실행 파일 경로로 보기 때문에 `cc` 서브커맨드가 사라지고, zig를 clang
-계열로 감지하면 zig가 이해하지 못하는 MSVC 트리플(`--target=x86_64-pc-windows-msvc`)을
-넘깁니다. 이 저장소는 그래서 `scripts/zig-cc.cmd` → `scripts/zig-cc.ps1` 래퍼를
-함께 둡니다.
+계열로 감지하면 zig가 파싱하지 못하는 Rust 형식 트리플을 넘깁니다. 이 저장소는
+그래서 `scripts/zig-cc.sh` 래퍼를 함께 둡니다.
 
-`cl.exe`가 없고 `zig`만 있으면 `lua/config/options.lua`가 이 래퍼를 `$CC`로
-자동 지정하므로, **zig만 설치하면 추가 설정은 필요 없습니다.**
+`cc`/`gcc`/`clang`이 없고 `zig`만 있으면 `lua/config/options.lua`가 이 래퍼를
+`$CC`로 자동 지정하므로, **zig만 설치하면 추가 설정은 필요 없습니다.**
 
 ## Usage
 
 - 현재의 Nvim 설정을 백업하세요.
 
-```powershell
+```bash
 # required
-Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
+mv ~/.config/nvim{,.bak}
 
 # optional but recommended
-Move-Item $env:LOCALAPPDATA\nvim-data $env:LOCALAPPDATA\nvim-data.bak
+mv ~/.local/share/nvim{,.bak}
+mv ~/.local/state/nvim{,.bak}
+mv ~/.cache/nvim{,.bak}
 ```
 
 - Repository를 clone 하세요.
 
-```powershell
-git clone https://github.com/s4ng/lazy-vim-custom $env:LOCALAPPDATA\nvim
+```bash
+git clone https://github.com/s4ng/lazy-vim-custom ~/.config/nvim
 ```
 
 - Neovim을 시작하세요.
 
-```powershell
+```bash
 nvim
 ```
 
 ## Update and verification
 
-설정 저장소를 유지한 채 최신화하려면 PowerShell에서 다음을 실행하세요.
-`lazy-lock.json`도 변경될 수 있으므로, 검증 후 함께 커밋하는 것을 권장합니다.
+설정 저장소를 유지한 채 최신화하려면 다음 순서로 실행하세요. `lazy-lock.json`도
+변경될 수 있으므로, 검증 후 함께 커밋하는 것을 권장합니다.
 
-```powershell
-Set-Location $env:LOCALAPPDATA\nvim
+```bash
+cd ~/.config/nvim
 git pull --ff-only
 nvim
 ```
